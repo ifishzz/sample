@@ -14,6 +14,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
+        // \APP\Model\User::class=>\App\Policies\UserPolicy::class, 错误的
+        \App\Models\User::class=>\App\Policies\UserPolicy::class,
+
+        // 日这个的路径写错了，导致授权不到
     ];
 
     /**

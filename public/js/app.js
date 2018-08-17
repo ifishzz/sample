@@ -43291,7 +43291,7 @@ if (false) {
 /* 42 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: ModuleBuildError: Module build failed: \n}\n^\n      Invalid CSS after \"}\": expected 1 selector or at-rule, was \"<<<<<<< HEAD\"\n      in /home/vagrant/Code/sample/resources/assets/sass/app.scss (line 31, column 2)\n    at runLoaders (/home/vagrant/Code/sample/node_modules/webpack/lib/NormalModule.js:195:19)\n    at /home/vagrant/Code/sample/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /home/vagrant/Code/sample/node_modules/loader-runner/lib/LoaderRunner.js:230:18\n    at context.callback (/home/vagrant/Code/sample/node_modules/loader-runner/lib/LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (/home/vagrant/Code/sample/node_modules/sass-loader/lib/loader.js:55:13)\n    at Object.done [as callback] (/home/vagrant/Code/sample/node_modules/neo-async/async.js:7974:18)\n    at options.error (/home/vagrant/Code/sample/node_modules/node-sass/lib/index.js:294:32)");
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
