@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\User;
 use Auth;  //没有引命名空间错误
+use Mail;
 
 class UsersController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth', [
-           'except' => ['show', 'create', 'store']
+           'except' => ['show', 'create', 'store','index','confirmEmail']
        ]);
 
         $this->middleware('guest', [
@@ -20,6 +21,19 @@ class UsersController extends Controller
         ]);
 
         //只有这个三个不过滤，其他的都过滤，应该是白名单
+    }
+
+    public function confirmEmail($token)
+    {
+        $user = User::where('activation_token', $token)->firstOrFail();
+
+        $user->activated = true;
+        $user->activation_token = null;
+        $user->save();
+
+        Auth::login($user);
+        session()->flash('success', '恭喜你，激活成功！');
+        return redirect()->route('users.show', [$user]);
     }
 
     public function index()
@@ -53,10 +67,14 @@ class UsersController extends Controller
         'email' => $request->email,
         'password' => bcrypt($request->password),
       ]);
-        Auth::login($user);
 
-        session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
-        return redirect()->route('users.show', [$user]);
+        $this->sendEmailConfirmationTo($user);
+        session()->flash('success', '验证邮件已经发送到你的邮箱');
+        return redirect('/');
+        // Auth::login($user);
+        //
+        // session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
+        // return redirect()->route('users.show', [$user]);
     }
 
 
@@ -98,5 +116,19 @@ class UsersController extends Controller
         $user->delete();
         session()->flash('success', '成功刪除用戶');
         return back();
+    }
+
+    public function sendEmailConfirmationTo($user)
+    {
+        $view='emails.confirm';
+        $data = compact('user');
+        $from = 'aufree@yousails.com';
+        $name = 'Aufree';
+        $to = $user->email;
+        $subject = "感谢注册 Sample 应用！请确认你的邮箱。";
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
+            $message->from($from, $name)->to($to)->subject($subject);
+        });
     }
 }

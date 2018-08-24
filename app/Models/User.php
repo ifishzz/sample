@@ -23,9 +23,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     public function gravatar($size='100')
     {
@@ -38,5 +36,15 @@ class User extends Authenticatable
 // 用 strtolower 方法将邮箱转换为小写；
 // 将小写的邮箱使用 md5 方法进行转码；
 // 将转码后的邮箱与链接、尺寸拼接成完整的 URL 并返回；
+    }
+
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->activation_token = str_random(30);
+        });
     }
 }
